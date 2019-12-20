@@ -3,14 +3,9 @@ class face:
     def __init__(self, game):
         self.screen = game.screen
         self.screen_rect = game.screen.get_rect()
-
-        #Load ảnh
         self.image = pygame.image.load('images/1.png')
         self.rect = self.image.get_rect()
-        #Set vị trí
         self.rect.midbottom = self.screen_rect.midbottom
-
-        # Direction
         self.moving_right = False
         self.moving_left = False
 

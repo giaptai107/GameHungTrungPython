@@ -1,13 +1,15 @@
 import sys
 import pygame
 from face import face
+from enemy import Enemy
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((500, 700))
         self.bg_color = (100, 100, 100)
         self.face = face(self)
-    
+        self.enemies = pygame.sprite.Group()
+        self.create_enemy_group()    
 
 
     def run_game(self):
@@ -31,6 +33,7 @@ class Game:
     def update_game(self):
         self.screen.fill(self.bg_color)
         self.face.blitme()
+        self.enemies.draw(self.screen)
         pygame.display.flip()
 
     def check_keydown(self, event):
@@ -44,6 +47,17 @@ class Game:
             self.face.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.face.moving_left = False
+    
+    def create_enemy_group(self):
+        number = 2 
+        self.create_enemies(number)
+
+    def create_enemies(self, number):
+        """Create a new alien based on its order"""
+        for order in range(number):
+            enemy = Enemy(self)
+            enemy.rect.x = enemy.rect.width + 2 * enemy.rect.width * order
+            self.enemies.add(enemy)
 
         
 if __name__ == '__main__':
