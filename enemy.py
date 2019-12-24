@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+from face import face
 
 class Enemy(Sprite):
     def __init__(self, game):
@@ -8,6 +9,7 @@ class Enemy(Sprite):
         self.image = pygame.image.load('images/shit.png')
         self.rect = self.image.get_rect()
         self.rect.x = self.rect.width
-        self.rect.y = self.rect.height
-        
-    
+        self.rect.y = self.rect.height - 120
+    def update(self):
+        self.rect.y+=1
+       

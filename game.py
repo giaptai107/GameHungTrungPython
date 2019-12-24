@@ -1,7 +1,9 @@
 import sys
 import pygame
+import random
 from face import face
 from enemy import Enemy
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -10,13 +12,15 @@ class Game:
         self.face = face(self)
         self.enemies = pygame.sprite.Group()
         self.create_enemy_group()    
-
-
+       
     def run_game(self):
         while True:
             self.check_event()
             self.face.update()
+            self.enemies.update()
             self.update_game()
+           
+            
 
     def check_event(self):
         for event in pygame.event.get():
@@ -28,7 +32,7 @@ class Game:
             # Check key released
             elif event.type == pygame.KEYUP:
                 self.check_keyup(event)
-                       
+                    
 
     def update_game(self):
         self.screen.fill(self.bg_color)
@@ -49,18 +53,22 @@ class Game:
             self.face.moving_left = False
     
     def create_enemy_group(self):
-        number = 2 
+        number = 2
         self.create_enemies(number)
-
+        
     def create_enemies(self, number):
-        """Create a new alien based on its order"""
         for order in range(number):
             enemy = Enemy(self)
-            enemy.rect.x = enemy.rect.width + 2 * enemy.rect.width * order
+            enemy.rect.x = random.randrange(0,400)
             self.enemies.add(enemy)
+            
+    
+
+            
+
 
         
 if __name__ == '__main__':
-    # Make a game instance, and run the game.
     game = Game()
     game.run_game()
+    
