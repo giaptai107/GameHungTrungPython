@@ -12,24 +12,24 @@ score_value = 0
 font = pygame.font.Font('freesansbold.ttf', 32)
 textX = 10
 testY = 10
-# Player
+#Player
 playerImg = pygame.image.load('images/player.png')
 playerX = 180
 playerY = 580
 playerX_change = 0
 
-# Enemy
-enemyImg = []
-enemyX = []
-enemyY = []
-enemyY_change = 1
-num_of_enemies = 1
+#Egg
+eggImg = []
+eggX = []
+eggY = []
+eggY_change = 1
+num_of_eggs = 1
 
 
-for i in range(num_of_enemies):
-    enemyImg.append(pygame.image.load('images/egg.png'))
-    enemyX.append(random.randint(0, 450))
-    enemyY.append(random.randint(50, 150))
+for i in range(num_of_eggs):
+    eggImg.append(pygame.image.load('images/egg.png'))
+    eggX.append(random.randint(0, 450))
+    eggY.append(random.randint(50, 150))
     
 
 
@@ -48,12 +48,12 @@ def game_over_text():
 def player(x, y):
     screen.blit(playerImg, (x, y))
 
-def enemy(x, y, i):
-    screen.blit(enemyImg[i], (x, y))
+def egg(x, y, i):
+    screen.blit(eggImg[i], (x, y))
     
 
-def isCollision(enemyX, enemyY, playerX, playerY):
-    distance = math.sqrt(math.pow(enemyX - playerX, 2) + (math.pow(enemyY - playerY, 2)))
+def isCollision(eggX, eggY, playerX, playerY):
+    distance = math.sqrt(math.pow(eggX - playerX, 2) + (math.pow(eggY - playerY, 2)))
     if distance < 40:
         return True
     else:
@@ -86,33 +86,33 @@ while running:
     elif playerX >= 450:
         playerX = 450
 
-    # Enemy Movement
-    for i in range(num_of_enemies):
-        enemyY[i] += enemyY_change
+    # egg Movement
+    for i in range(num_of_eggs):
+        eggY[i] += eggY_change
 
 
         # Collision
-        collision = isCollision(enemyX[i], enemyY[i], playerX, playerY)
+        collision = isCollision(eggX[i], eggY[i], playerX, playerY)
         if collision == True:
             score_value += 1
-            enemyX[i] = random.randint(0, 450)
-            enemyY[i] = random.randint(50, 150)
+            eggX[i] = random.randint(0, 450)
+            eggY[i] = random.randint(50, 150)
         if score_value > 3:
-            enemyY_change = 2
+            eggY_change = 2
         if score_value > 6:
-            enemyY_change = 3
+            eggY_change = 3
         if score_value > 15:
-            enemyY_change = 4
+            eggY_change = 4
             
 
-        if collision == False and enemyY[i] > 580:
+        if collision == False and eggY[i] > 580:
             score_value -= 2
-            enemyX[i] = random.randint(0, 450)
-            enemyY[i] = random.randint(50, 150)
+            eggX[i] = random.randint(0, 450)
+            eggY[i] = random.randint(50, 150)
         if score_value < 0:
             game_over_text()
             break
-        enemy(enemyX[i], enemyY[i], i)
+        egg(eggX[i], eggY[i], i)
 		
 		
     
