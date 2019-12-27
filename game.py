@@ -12,25 +12,35 @@ score_value = 0
 font = pygame.font.Font('freesansbold.ttf', 32)
 textX = 10
 testY = 10
-#Player
+# Player
 playerImg = pygame.image.load('images/player.png')
 playerX = 180
 playerY = 580
 playerX_change = 0
 
-#Egg
+# egg
 eggImg = []
 eggX = []
 eggY = []
 eggY_change = 1
 num_of_eggs = 1
 
+#enemies
+eneImg = []
+eneX = []
+eneY = []
+eneY_change = 1
 
+#eggAdd
 for i in range(num_of_eggs):
     eggImg.append(pygame.image.load('images/egg.png'))
     eggX.append(random.randint(0, 450))
     eggY.append(random.randint(50, 150))
-    
+#eneAdd
+for i in range(1):
+    eneImg.append(pygame.image.load('images/shit.png'))
+    eneX.append(random.randint(0, 450))
+    eneY.append(random.randint(50, 150))
 
 
 
@@ -50,6 +60,10 @@ def player(x, y):
 
 def egg(x, y, i):
     screen.blit(eggImg[i], (x, y))
+
+def ene(x,y,i):
+    screen.blit(eneImg[i], (x, y))
+    
     
 
 def isCollision(eggX, eggY, playerX, playerY):
@@ -59,6 +73,12 @@ def isCollision(eggX, eggY, playerX, playerY):
     else:
         return False
 
+def EneisCollision(eneX, eneY, playerX, playerY):
+    distance = math.sqrt(math.pow(eneX - playerX, 2) + (math.pow(eneY - playerY, 2)))
+    if distance < 40:
+        return True
+    else:
+        return False
 #Vòng lặp
 running = True
 while running:
@@ -89,9 +109,6 @@ while running:
     # egg Movement
     for i in range(num_of_eggs):
         eggY[i] += eggY_change
-
-
-        # Collision
         collision = isCollision(eggX[i], eggY[i], playerX, playerY)
         if collision == True:
             score_value += 1
@@ -101,21 +118,36 @@ while running:
             eggY_change = 2
         if score_value > 6:
             eggY_change = 3
-        if score_value > 15:
-            eggY_change = 4
-            
-
+        #if score_value > 15:
+            #eggY_change = 4
         if collision == False and eggY[i] > 580:
-            score_value -= 2
+            score_value -= 3
             eggX[i] = random.randint(0, 450)
             eggY[i] = random.randint(50, 150)
         if score_value < 0:
             game_over_text()
             break
         egg(eggX[i], eggY[i], i)
-		
-		
+    #Shit movement
+    for i in range(1):
+        if score_value >= 10:
+            eneY[i] += eneY_change
+            collision2 = EneisCollision(eneX[i], eneY[i], playerX, playerY)
+            if collision2 == True:
+                score_value -= 5
+                eneX[i] = random.randint(0, 450)
+                eneY[i] = random.randint(50, 150)
+            if score_value >= 20:
+                eneY_change = 2
+            if score_value >= 30:
+                eneY_change = 3
+            
+            if collision2 == False and eneY[i] > 580:            
+                eneX[i] = random.randint(0, 450)
+                eneY[i] = random.randint(50, 150)
+            ene(eneX[i], eneY[i], i)
     
+        
     player(playerX, playerY)
     show_score(textX, testY)
     pygame.display.update()
